@@ -20,14 +20,14 @@ from analytics.analyst import generate_comment
 
 
 st.set_page_config(
-    page_title="AI Valuation Terminal",
+    page_title="Valuation Terminal",
     layout="wide"
 )
 
 
 
 st.title(
-    "📈 AI Stock Valuation Terminal"
+    "📈 Stock Valuation Terminal"
 )
 
 
