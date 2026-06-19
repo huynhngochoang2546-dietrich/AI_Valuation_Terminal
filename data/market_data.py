@@ -16,12 +16,14 @@ def get_price(ticker):
     )
 
 
-    price=data["Close"]
+# SỬA ĐOẠN NÀY TRONG FILE data/market_data.py (Dòng 19 - 26)
+    
+    # 1. Đảm bảo loại bỏ hoàn toàn cấu trúc MultiIndex nếu yfinance tự sinh ra
+    if isinstance(data.columns, pd.MultiIndex):
+        data.columns = data.columns.droplevel(1) # Bỏ tầng dưới (tầng chứa tên Ticker)
 
-
-    if isinstance(price,pd.DataFrame):
-        price=price.iloc[:,0]
-
+    # 2. Lấy cột Close an toàn và loại bỏ các dòng trống ở cuối (nếu có)
+    price = data["Close"].dropna()
 
     return price
 
