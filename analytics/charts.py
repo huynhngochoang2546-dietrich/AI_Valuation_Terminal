@@ -147,27 +147,30 @@ def forecast_chart(
 
 
 
-def monte_carlo_chart(simulation):
+def monte_carlo_chart(paths):
 
-
-    final_price = simulation[-1,:]
-
+    final_price = paths[-1,:]
 
     fig=go.Figure()
 
 
-    fig.add_trace(
-        go.Histogram(
-            x=final_price,
-            nbinsx=50,
-            name="Simulation"
+    for i in range(100):
+
+        fig.add_trace(
+            go.Scatter(
+                y=paths[:,i],
+                mode="lines",
+                opacity=0.3,
+                showlegend=False
+            )
         )
-    )
 
 
     fig.update_layout(
-        title="Monte Carlo Terminal Price Distribution",
-        height=500
+        title="Monte Carlo Simulation Paths",
+        xaxis_title="Days",
+        yaxis_title="Price",
+        height=600
     )
 
 

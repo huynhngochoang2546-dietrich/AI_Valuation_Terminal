@@ -107,7 +107,17 @@ probability=probability_up(
     current
 )
 
+st.subheader(
+    "Monte Carlo Simulation"
+)
 
+
+st.plotly_chart(
+    monte_carlo_chart(
+        paths
+    ),
+    use_container_width=True
+)
 
 # ==================
 # FORECAST
@@ -118,7 +128,18 @@ forecast=price_forecast(
     252
 )
 
+st.subheader(
+    "Forecast"
+)
 
+
+st.plotly_chart(
+    forecast_chart(
+        price,
+        forecast
+    ),
+    use_container_width=True
+)
 
 # ==================
 # AI COMMENT
