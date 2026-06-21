@@ -1,6 +1,7 @@
 import streamlit as st
 import plotly.graph_objects as go
 
+from analytics.export_excel import export_excel
 
 from data.market_data import *
 
