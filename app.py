@@ -1,17 +1,6 @@
 import streamlit as st
 import plotly.graph_objects as go
 
-from analytics.export_excel import export_excel
-
-from analytics.charts import (
-    price_chart,
-    moving_average_chart,
-    forecast_chart,
-    monte_carlo_chart
-)
-
-from analytics.fundamentals import get_fundamentals
-
 from data.market_data import *
 
 from models.monte_carlo import simulate
@@ -30,7 +19,7 @@ from analytics.analyst import generate_comment
 
 
 st.set_page_config(
-    page_title="Valuation Terminal",
+    page_title="Stock Valuation Terminal",
     layout="wide"
 )
 
@@ -53,17 +42,9 @@ ticker = st.sidebar.text_input(
 # DATA
 # ==================
 
-try:
-
-    price=get_price(ticker)
-
-except:
-
-    st.error(
-    "Invalid ticker or no data available"
-    )
-
-    st.stop()
+price=get_price(
+    ticker
+)
 
 
 market=get_market()
@@ -84,9 +65,7 @@ stats=statistics(
     market
 )
 
-fundamental = get_fundamentals(
-    ticker
-)
+
 
 # ==================
 # MONTE CARLO
@@ -107,17 +86,7 @@ probability=probability_up(
     current
 )
 
-st.subheader(
-    "Monte Carlo Simulation"
-)
 
-
-st.plotly_chart(
-    monte_carlo_chart(
-        paths
-    ),
-    use_container_width=True
-)
 
 # ==================
 # FORECAST
@@ -128,18 +97,7 @@ forecast=price_forecast(
     252
 )
 
-st.subheader(
-    "Forecast"
-)
 
-
-st.plotly_chart(
-    forecast_chart(
-        price,
-        forecast
-    ),
-    use_container_width=True
-)
 
 # ==================
 # AI COMMENT
@@ -362,94 +320,10 @@ stats["Sharpe Ratio"]
 # ==================
 
 st.subheader(
-"AI Financial Analyst"
+"Financial Analyst"
 )
 
 
 st.write(
 comment
-)
-
-st.subheader(
-    "Export Report"
-)
-
-
-
-excel_file = export_excel(
-
-    ticker,
-
-    price,
-
-    stats,
-
-    forecast,
-
-    paths,
-
-    {
-        "VaR": VaR(paths),
-        "Probability Up": probability
-    },
-
-    {
-        "Current Price": current,
-        "Expected Price": final_prices.mean(),
-        "Upside":
-        (final_prices.mean()-current)/current
-    }
-
-)
-
-
-st.download_button(
-
-    label="Download Excel Report",
-
-    data=excel_file,
-
-    file_name=
-    f"{ticker}_Valuation_Report.xlsx",
-
-    mime=
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-
-)
-st.subheader(
-    "Fundamental Analysis"
-)
-
-
-st.dataframe(
-
-    pd.DataFrame(
-        fundamental.items(),
-        columns=[
-            "Metric",
-            "Value"
-        ]
-
-    )
-
-)
-
-import streamlit as st
-
-
-st.subheader(
-    "Price Analysis"
-)
-
-
-st.plotly_chart(
-    price_chart(price),
-    use_container_width=True
-)
-
-
-
-st.plotly_chart(
-    moving_average_chart(price),
-    use_container_width=True
 )
