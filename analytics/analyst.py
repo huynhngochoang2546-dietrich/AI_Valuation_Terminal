@@ -1,48 +1,44 @@
-# analytics/analyst.py
-
-
 def generate_comment(
     ticker,
-    current_price,
-    expected_price,
+    current,
+    expected,
     probability,
     volatility,
     beta,
     sharpe
 ):
 
-    comment=[]
-
 
     upside = (
-        expected_price-current_price
-    ) / current_price
+        expected-current
+    )/current
 
 
 
-    # Valuation view
+    comments=[]
+
+
+
+    # Valuation
 
     if upside > 0.15:
 
-        comment.append(
-            f"{ticker} appears undervalued. "
-            f"Monte Carlo expected value suggests "
-            f"potential upside of {upside*100:.2f}%."
+        comments.append(
+        f"{ticker} appears undervalued "
+        f"with estimated upside of {upside*100:.1f}%."
         )
-
 
     elif upside < -0.15:
 
-        comment.append(
-            f"{ticker} appears relatively expensive "
-            f"based on simulated valuation."
+        comments.append(
+        f"{ticker} appears overvalued "
+        f"based on current projection."
         )
-
 
     else:
 
-        comment.append(
-            f"{ticker} is trading close to its estimated value."
+        comments.append(
+        f"{ticker} is trading close to estimated value."
         )
 
 
@@ -51,54 +47,46 @@ def generate_comment(
 
     if volatility > 0.35:
 
-        comment.append(
-            "Risk level is high because annualized volatility "
-            "is above 35%."
-        )
-
-    elif volatility > 0.2:
-
-        comment.append(
-            "Risk level is moderate."
+        comments.append(
+        "Risk is high due to elevated volatility."
         )
 
     else:
 
-        comment.append(
-            "Price volatility is relatively stable."
+        comments.append(
+        "Volatility remains within a moderate range."
         )
 
 
 
     # Beta
 
-    if beta > 1.2:
+    if beta > 1.3:
 
-        comment.append(
-            "The stock is more sensitive than the market "
-            "(high beta)."
+        comments.append(
+        "Stock is more sensitive to market movements."
         )
+
 
     elif beta < 0.8:
 
-        comment.append(
-            "The stock behaves defensively compared with the market."
+        comments.append(
+        "Stock has defensive characteristics."
         )
-
 
 
     # Probability
 
     if probability > 0.6:
 
-        comment.append(
-            "Monte Carlo distribution shows a positive expected bias."
+        comments.append(
+        "Monte Carlo simulation shows positive probability bias."
         )
 
     else:
 
-        comment.append(
-            "Future price uncertainty remains significant."
+        comments.append(
+        "Future price distribution remains uncertain."
         )
 
 
@@ -107,15 +95,9 @@ def generate_comment(
 
     if sharpe > 1:
 
-        comment.append(
-            "Risk-adjusted return looks attractive."
-        )
-
-    else:
-
-        comment.append(
-            "Risk-adjusted return should be monitored."
+        comments.append(
+        "Risk-adjusted return is attractive."
         )
 
 
-    return "\n\n".join(comment)
+    return "\n\n".join(comments)
